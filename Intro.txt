@@ -6,18 +6,18 @@ ScreenGui.Parent = game.CoreGui
 ScreenGui.ResetOnSpawn = false
 
 local TweenService = game:GetService("TweenService")
-local RunService = game:GetService("RunService")
 
 local bg = Instance.new("Frame")
 bg.Size = UDim2.new(1,0,1,0)
+bg.Position = UDim2.new(0,0,0,0)
 bg.BackgroundColor3 = Color3.fromRGB(255,120,0)
 bg.BackgroundTransparency = 0.6
 bg.BorderSizePixel = 0
 bg.Parent = ScreenGui
 
 local title = Instance.new("TextLabel")
-title.Size = UDim2.new(0.6,0,0.2,0)
-title.Position = UDim2.new(0.2,0,0.25,0)
+title.Size = UDim2.new(0.6,0,0.15,0)
+title.Position = UDim2.new(0.2,0,0.2,0)
 title.BackgroundTransparency = 1
 title.Text = "BRUTON HUB"
 title.TextColor3 = Color3.fromRGB(255,255,255)
@@ -37,7 +37,6 @@ task.spawn(function()
 	end
 end)
 
-
 local barFrame = Instance.new("Frame")
 barFrame.Size = UDim2.new(0.6,0,0.05,0)
 barFrame.Position = UDim2.new(0.2,0,0.55,0)
@@ -46,15 +45,19 @@ barFrame.BorderSizePixel = 0
 barFrame.ClipsDescendants = true
 barFrame.Parent = bg
 
+local barCorner = Instance.new("UICorner")
+barCorner.CornerRadius = UDim.new(0.5,0)
+barCorner.Parent = barFrame
+
 local bar = Instance.new("Frame")
 bar.Size = UDim2.new(0,0,1,0)
 bar.Position = UDim2.new(0,0,0,0)
 bar.BackgroundColor3 = Color3.fromRGB(255,200,0)
 bar.BorderSizePixel = 0
 bar.Parent = barFrame
-bar.AnchorPoint = Vector2.new(0,0)
-bar.ClipsDescendants = true
-
+local barCorner2 = Instance.new("UICorner")
+barCorner2.CornerRadius = UDim.new(0.5,0)
+barCorner2.Parent = bar
 
 local head = Instance.new("TextLabel")
 head.Size = UDim2.new(0.05,0,1,0)
@@ -75,14 +78,11 @@ task.spawn(function()
 	end
 end)
 
-
-local duration = 6 
+local duration = 6
 local steps = 100
 local stepTime = duration/steps
-local count = 0
 
 for i = 1, steps do
-	count = i
 	local newSize = UDim2.new(i/steps,0,1,0)
 	bar:TweenSize(newSize,"Out","Linear",stepTime,true)
 	head:TweenPosition(UDim2.new(i/steps,0,0,0),"Out","Linear",stepTime,true)
