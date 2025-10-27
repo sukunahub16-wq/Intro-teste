@@ -1,199 +1,94 @@
+pcall(function() if game.CoreGui:FindFirstChild("BrutonIntro") then game.CoreGui.BrutonIntro:Destroy() end end)
 
---BRUTON HUB INTRO BY TEXAS
-local Players = game:GetService("Players")
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "BrutonIntro"
+ScreenGui.Parent = game.CoreGui
+ScreenGui.ResetOnSpawn = false
+
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local PLAYER = Players.LocalPlayer
+local bg = Instance.new("Frame")
+bg.Size = UDim2.new(1,0,1,0)
+bg.BackgroundColor3 = Color3.fromRGB(255,120,0)
+bg.BackgroundTransparency = 0.6
+bg.BorderSizePixel = 0
+bg.Parent = ScreenGui
 
-local TOTAL_DURATION = 5.5          
-local PULSE_INTERVAL = 0.45         
-local BG_DARK = Color3.fromRGB(12,7,2)
-local GLOW_A = Color3.fromRGB(255,90,0)
-local GLOW_B = Color3.fromRGB(255,150,0)
-local LOGO_TEXT = "BRUTON HUB"
-local SUB_TEXT = "HALLOWEEN UPDATE"
-local ENABLE_SOUND = false          
-local SOUND_NAME = "IntroSound"
-local MAIN_SCRIPT_URL = "https://scriptsbinsauth.vercel.app/api/scripts/293e9a44-861f-4955-81f6-b7dcc796b455/raw"
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(0.6,0,0.2,0)
+title.Position = UDim2.new(0.2,0,0.25,0)
+title.BackgroundTransparency = 1
+title.Text = "BRUTON HUB"
+title.TextColor3 = Color3.fromRGB(255,255,255)
+title.Font = Enum.Font.GothamBold
+title.TextScaled = true
+title.Parent = bg
 
-
--- Helper to create instances
-local function make(parent, class, props)
-	local obj = Instance.new(class)
-	for k,v in pairs(props or {}) do obj[k] = v end
-	obj.Parent = parent
-	return obj
-end
-
--- Launch main script: you can replace body with loadstring(game:HttpGet(MAIN_SCRIPT_URL))()
-local function launchMain()
-	-- Option A (default): load from URL (requires executor that allows HttpGet)
-	if MAIN_SCRIPT_URL and MAIN_SCRIPT_URL ~= "" then
-		pcall(function()
-			local ok, res = pcall(function() return loadstring(game:HttpGet(MAIN_SCRIPT_URL)) end)
-			if ok and type(res) == "function" then
-				res()
-			end
-		end)
-	end
-
-	-- Option B: If you want to run a function instead, replace above with:
-	-- pcall(function() YourOpenFunction() end)
-end
-
--- Build GUI
-pcall(function() if game.CoreGui:FindFirstChild("BrutonIntro") then game.CoreGui.BrutonIntro:Destroy() end end)
-local screen = make(game.CoreGui, "ScreenGui", {Name = "BrutonIntro", ResetOnSpawn = false})
-
-local bg = make(screen, "Frame", {
-	Name = "BG", Size = UDim2.new(1,0,1,0), Position = UDim2.new(0,0,0,0),
-	BackgroundColor3 = BG_DARK, BorderSizePixel = 0, ZIndex = 0
-})
-local bgGrad = make(bg, "UIGradient", {Name = "BGGradient"})
-bgGrad.Color = ColorSequence.new({
-	ColorSequenceKeypoint.new(0, Color3.fromRGB(6,4,2)),
-	ColorSequenceKeypoint.new(1, Color3.fromRGB(18,8,4))
-})
-bgGrad.Rotation = 35
-
-local glowFrame = make(screen, "Frame", {
-	Name = "Glow", Size = UDim2.new(0.92,0,0.92,0), Position = UDim2.new(0.5,0,0.5,0),
-	AnchorPoint = Vector2.new(0.5,0.5), BackgroundTransparency = 1, ZIndex = 2
-})
-local glowStroke = make(glowFrame, "UIStroke", {
-	Thickness = 6, Color = GLOW_A, ApplyStrokeMode = Enum.ApplyStrokeMode.Border, LineJoinMode = Enum.LineJoinMode.Round
-})
-make(glowFrame, "UICorner", {CornerRadius = UDim.new(0, 18)})
-
-local panel = make(screen, "Frame", {
-	Name = "Panel", Size = UDim2.new(0, 720, 0, 340), Position = UDim2.new(0.5,0,0.5,0),
-	AnchorPoint = Vector2.new(0.5,0.5), BackgroundColor3 = Color3.fromRGB(18,8,4), BorderSizePixel = 0, ZIndex = 3
-})
-make(panel, "UICorner", {CornerRadius = UDim.new(0, 16)})
-local panelStroke = make(panel, "UIStroke", {Color = GLOW_A, Thickness = 3})
-
-local header = make(panel, "Frame", {Name = "Header", Size = UDim2.new(1,-40,0,120), Position = UDim2.new(0,20,0,12), BackgroundTransparency = 1, ZIndex = 4})
-local title = make(header, "TextLabel", {
-	Name = "Title", Size = UDim2.new(1,0,0.6,0), Position = UDim2.new(0,0,0,0),
-	BackgroundTransparency = 1, Text = LOGO_TEXT, Font = Enum.Font.GothamBlack, TextColor3 = Color3.fromRGB(255,255,255),
-	TextScaled = true, TextStrokeTransparency = 0.4, ZIndex = 5
-})
-local subtitle = make(header, "TextLabel", {
-	Name = "Sub", Size = UDim2.new(1,0,0.35,0), Position = UDim2.new(0,0,0.6,0),
-	BackgroundTransparency = 1, Text = SUB_TEXT, Font = Enum.Font.Gotham, TextColor3 = Color3.fromRGB(255,200,0),
-	TextScaled = true, TextStrokeTransparency = 0.6, ZIndex = 5
-})
-
-local center = make(panel, "Frame", {Name = "Center", Size = UDim2.new(0, 300, 0, 200), Position = UDim2.new(0.5,-150,0.5,-10), BackgroundTransparency = 1, ZIndex = 5})
-make(center, "UICorner", {CornerRadius = UDim.new(0,999)})
-local logo = make(center, "TextLabel", {
-	Name = "Logo", Size = UDim2.new(1,1,0,0), Position = UDim2.new(0,0,0,0),
-	BackgroundTransparency = 1, Text = LOGO_TEXT, Font = Enum.Font.GothamBlack,
-	TextColor3 = Color3.fromRGB(255,255,255), TextScaled = true, TextStrokeTransparency = 0.25, ZIndex = 6
-})
-
-local footer = make(panel, "Frame", {Name = "Footer", Size = UDim2.new(1,-40,0,60), Position = UDim2.new(0,20,1,-76), BackgroundTransparency = 1, ZIndex = 5})
-local tip = make(footer, "TextLabel", {
-	Name = "Tip", Size = UDim2.new(0.7,0,1,0), Position = UDim2.new(0,0,0,0),
-	BackgroundTransparency = 1, Text = "SKIP intro or wait to auto-launch", Font = Enum.Font.Gotham, TextColor3 = Color3.fromRGB(220,210,200),
-	TextScaled = true, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 6
-})
-local skipBtn = make(footer, "TextButton", {
-	Name = "Skip", Size = UDim2.new(0.28,0,0.9,0), Position = UDim2.new(0.72,0,0.05,0),
-	BackgroundColor3 = Color3.fromRGB(30,10,0), Text = "SKIP", Font = Enum.Font.GothamBold, TextColor3 = Color3.fromRGB(255,255,255),
-	TextScaled = true, ZIndex = 7
-})
-make(skipBtn, "UICorner", {CornerRadius = UDim.new(0,10)})
-make(skipBtn, "UIStroke", {Color = GLOW_A, Thickness = 2})
-
-local sparks = {}
-for i = 1, 10 do
-	local s = make(center, "Frame", {
-		Name = "Spark"..i, Size = UDim2.new(0,4,0.22,0),
-		Position = UDim2.new(math.random()*0.9,0, math.random()*0.6,0),
-		BackgroundColor3 = GLOW_A, BackgroundTransparency = 1, ZIndex = 7
-	})
-	table.insert(sparks, s)
-end
-
-local introSound
-if ENABLE_SOUND then
-	local s = ReplicatedStorage:FindFirstChild(SOUND_NAME)
-	if s and s:IsA("Sound") then
-		introSound = s:Clone()
-		introSound.Parent = panel
-		pcall(function() introSound:Play() end)
-	end
-end
-
-panel.Position = UDim2.new(0.5, 0, -0.6, 0)
-title.TextTransparency = 1
-subtitle.TextTransparency = 1
-local panelIntro = TweenService:Create(panel, TweenInfo.new(0.8, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, 0, 0.5, 0)})
-local titlePop = TweenService:Create(title, TweenInfo.new(0.7, Enum.EasingStyle.Quad), {TextTransparency = 0})
-local subPop = TweenService:Create(subtitle, TweenInfo.new(0.7, Enum.EasingStyle.Quad), {TextTransparency = 0})
-
-panelIntro:Play()
-task.delay(0.25, function() titlePop:Play(); subPop:Play() end)
-
-local function pulseGlow()
-	TweenService:Create(glowStroke, TweenInfo.new(PULSE_INTERVAL, Enum.EasingStyle.Quad), {Color = GLOW_A}):Play()
-	task.wait(PULSE_INTERVAL)
-	TweenService:Create(glowStroke, TweenInfo.new(PULSE_INTERVAL, Enum.EasingStyle.Quad), {Color = GLOW_B}):Play()
-end
-
-local sparksRoutine = true
+local pulse = true
 task.spawn(function()
-	while sparksRoutine do
-		for _, s in ipairs(sparks) do
-			pcall(function()
-				local targetX = math.random()*0.9
-				local targetY = math.random()*0.6
-				TweenService:Create(s, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {BackgroundTransparency = 0, Position = UDim2.new(targetX,0,targetY,0)}):Play()
-				task.wait(0.18)
-				TweenService:Create(s, TweenInfo.new(0.6, Enum.EasingStyle.Quad), {BackgroundTransparency = 1}):Play()
-			end)
-			task.wait(0.06)
-		end
-		task.wait(0.35)
+	while pulse do
+		local tween1 = TweenService:Create(title,TweenInfo.new(0.8,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{TextColor3 = Color3.fromRGB(255,200,50)})
+		local tween2 = TweenService:Create(title,TweenInfo.new(0.8,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{TextColor3 = Color3.fromRGB(255,255,255)})
+		tween1:Play()
+		tween1.Completed:Wait()
+		tween2:Play()
+		tween2.Completed:Wait()
 	end
 end)
 
-local glowRoutine = true
+
+local barFrame = Instance.new("Frame")
+barFrame.Size = UDim2.new(0.6,0,0.05,0)
+barFrame.Position = UDim2.new(0.2,0,0.55,0)
+barFrame.BackgroundColor3 = Color3.fromRGB(50,50,50)
+barFrame.BorderSizePixel = 0
+barFrame.ClipsDescendants = true
+barFrame.Parent = bg
+
+local bar = Instance.new("Frame")
+bar.Size = UDim2.new(0,0,1,0)
+bar.Position = UDim2.new(0,0,0,0)
+bar.BackgroundColor3 = Color3.fromRGB(255,200,0)
+bar.BorderSizePixel = 0
+bar.Parent = barFrame
+bar.AnchorPoint = Vector2.new(0,0)
+bar.ClipsDescendants = true
+
+
+local head = Instance.new("TextLabel")
+head.Size = UDim2.new(0.05,0,1,0)
+head.Position = UDim2.new(0,0,0,0)
+head.BackgroundTransparency = 1
+head.Text = "🎃"
+head.TextScaled = true
+head.Parent = bar
+
 task.spawn(function()
-	while glowRoutine do
-		pulseGlow()
+	while barFrame.Parent do
+		local tween1 = TweenService:Create(bar,TweenInfo.new(0.8,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{BackgroundColor3 = Color3.fromRGB(255,150,0)})
+		local tween2 = TweenService:Create(bar,TweenInfo.new(0.8,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{BackgroundColor3 = Color3.fromRGB(255,200,0)})
+		tween1:Play()
+		tween1.Completed:Wait()
+		tween2:Play()
+		tween2.Completed:Wait()
 	end
 end)
 
-local finished = false
-local function endIntro()
-	if finished then return end
-	finished = true
-	sparksRoutine = false
-	glowRoutine = false
-	if introSound and introSound.Playing then pcall(function() introSound:Stop() end) end
 
-	for i = 1, 12 do
-		local t = i/12
-		panel.BackgroundTransparency = math.clamp(panel.BackgroundTransparency + 0.08, 0, 1)
-		bg.BackgroundTransparency = math.clamp(bg.BackgroundTransparency + 0.08, 0, 1)
-		RunService.Heartbeat:Wait()
-	end
+local duration = 6 
+local steps = 100
+local stepTime = duration/steps
+local count = 0
 
-	-- cleanup and launch main
-	pcall(function() screen:Destroy() end)
-	task.wait(0.08)
-	pcall(launchMain)
+for i = 1, steps do
+	count = i
+	local newSize = UDim2.new(i/steps,0,1,0)
+	bar:TweenSize(newSize,"Out","Linear",stepTime,true)
+	head:TweenPosition(UDim2.new(i/steps,0,0,0),"Out","Linear",stepTime,true)
+	title.Text = "BRUTON HUB - "..i.."%"
+	task.wait(stepTime)
 end
 
-skipBtn.MouseButton1Click:Connect(endIntro)
-
-
-task.delay(TOTAL_DURATION, function()
-	endIntro()
-end)
-
-PLAYER.CharacterRemoving:Connect(function() if not finished then endIntro() end)
+pulse = false
+ScreenGui:Destroy()
