@@ -6,18 +6,19 @@ ScreenGui.Parent = game.CoreGui
 ScreenGui.ResetOnSpawn = false
 
 local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
 
 local bg = Instance.new("Frame")
 bg.Size = UDim2.new(1,0,1,0)
 bg.Position = UDim2.new(0,0,0,0)
 bg.BackgroundColor3 = Color3.fromRGB(255,120,0)
-bg.BackgroundTransparency = 0.6
+bg.BackgroundTransparency = 0.5
 bg.BorderSizePixel = 0
 bg.Parent = ScreenGui
 
 local title = Instance.new("TextLabel")
-title.Size = UDim2.new(0.6,0,0.15,0)
-title.Position = UDim2.new(0.2,0,0.2,0)
+title.Size = UDim2.new(0.6,0,0.12,0)
+title.Position = UDim2.new(0.2,0,0.15,0)
 title.BackgroundTransparency = 1
 title.Text = "BRUTON HUB"
 title.TextColor3 = Color3.fromRGB(255,255,255)
@@ -91,4 +92,27 @@ for i = 1, steps do
 end
 
 pulse = false
+
+task.spawn(function()
+	for i = 1,30 do
+		local pumpkin = Instance.new("TextLabel")
+		pumpkin.Size = UDim2.new(0.05,0,0.05,0)
+		pumpkin.Position = UDim2.new(math.random(),0,-0.1,0)
+		pumpkin.BackgroundTransparency = 1
+		pumpkin.Text = "🎃"
+		pumpkin.TextScaled = true
+		pumpkin.Parent = bg
+
+		task.spawn(function()
+			while pumpkin.Parent do
+				local targetY = 1.1
+				pumpkin:TweenPosition(UDim2.new(pumpkin.Position.X.Scale,0,targetY,0),"Out","Linear",duration,true)
+				task.wait(duration)
+				pumpkin:Destroy()
+			end
+		end)
+		task.wait(0.2)
+	end
+end)
+
 ScreenGui:Destroy()
